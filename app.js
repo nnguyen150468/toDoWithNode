@@ -109,14 +109,15 @@ yargs.command({
     },
     handler: function(args){
         const todos = loadData();
-        console.log(chalk.bold.bgGrey.red("List of all To-dos:"))
+        console.log(chalk.bold.bgGrey.red(`List of ${args.status} To-dos:`))
         for (let {id, todo, status} of todos){
             if(args.status === "all"){
                 if(status===true){
                     status="completed"
                     console.log(id, todo, chalk.blueBright(status))
-                } else status="incomplete"
-                console.log(id, todo, chalk.red(status))
+                } else if (status="incomplete"){
+                    console.log(id, todo, chalk.red(status))
+                }
             }
             else if( args.status==="completed" ){
                 if(status===true){
@@ -160,8 +161,9 @@ yargs.command({
             if(status===true){
                 status="completed"
                 console.log(id, todo, chalk.blueBright(status))
-            } else status="incomplete"
-            console.log(id, todo, chalk.red(status))
+            } else if(status="incomplete"){
+                console.log(id, todo, chalk.red(status))
+            }
         }
         fs.writeFileSync('./data/database.json', JSON.stringify(newTodos))
     }
@@ -185,6 +187,15 @@ yargs.command({
                 todos[i].status = !todos[i].status
             }
         }
+
+        // for(let {id, status} of todos){
+        //     if(id==args.id){
+        //         console.log('id',id)
+        //         console.log('status',status)
+        //         status = !status
+        //         console.log('status after',status)
+        //     }
+        // }
 
         console.log('after toggle',todos)
         fs.writeFileSync('./data/database.json', JSON.stringify(todos))
